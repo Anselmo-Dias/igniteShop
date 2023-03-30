@@ -17,11 +17,11 @@ interface ProductProps {
 
 export default function Product({product}: ProductProps) {
 
-  // const {isFallback} = useRouter()
+  const {isFallback} = useRouter()
 
-  // if(isFallback) {
-  //   return <p>Loaading...</p>
-  // }
+  if(isFallback) {
+    return <p>Loaading...</p>
+  }
 
   return (
     <ProductContainer>
