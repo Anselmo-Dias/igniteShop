@@ -48,15 +48,29 @@ export const Product = styled('a', {
     opacity: 0,
     transition: 'all 0.2s ease-in-out',
 
-    strong: {
-      fontSize: '$lg',
-      color: '$gray100',
+    img: {
+      background: '$green500', 
+      padding: '0.75rem',
+      borderRadius: 6,
     },
 
-    span: {
-      fontSize: '$xl',
-      fontWeight: 'bold',
-      color: '$green500',
+    div: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      gap: 4,
+
+      strong: {
+        fontSize: '$lg',
+        color: '$gray100',
+      },
+  
+      span: {
+        fontSize: '$xl',
+        fontWeight: 'bold',
+        color: '$green500',
+      }
     }
   },
 
