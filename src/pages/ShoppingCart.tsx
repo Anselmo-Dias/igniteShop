@@ -1,14 +1,34 @@
 import Image from "next/image";
 import {
+  BoxPayments,
+  ByProductsButton,
+  CloseButton,
   Items,
   ItemsContainer,
+  PaymentsContainer,
   ShoppingCartContainer,
 } from "../styles/pages/shoppingCart";
 import img from '../assets/Home.png'
+import closeImg from '../assets/close.svg'
+import { Dispatch, SetStateAction } from "react";
 
-export function ShoppingCart() {
+interface ShoppingCartProps {
+  toggleModal: Dispatch<SetStateAction<boolean>>
+}
+
+
+export function ShoppingCart({ toggleModal } : ShoppingCartProps) {
+
+  function handleToggleModalShoppingCart() {
+    toggleModal(false)
+  }
+
+
   return (
     <ShoppingCartContainer>
+      <CloseButton onClick={handleToggleModalShoppingCart} type="button">
+            <Image width={30} height={30} src={closeImg} alt="" />
+      </CloseButton>
       <div>
         <h1>Sacola de compras</h1>
 
@@ -53,7 +73,24 @@ export function ShoppingCart() {
             </div>
           </Items>
         </ItemsContainer>
+
+        
       </div>
+      <PaymentsContainer>
+          <BoxPayments>
+            <p>
+              <span>Quantidade</span>
+              <span>3 itens</span>
+            </p>
+            <p>
+              <strong>Valor Total</strong>
+              <strong>R$ 270,00</strong>
+            </p>
+          </BoxPayments>
+          <ByProductsButton type="button">
+            Finalizar compra
+          </ByProductsButton>
+      </PaymentsContainer>
     </ShoppingCartContainer>
   );
 }

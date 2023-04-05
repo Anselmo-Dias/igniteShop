@@ -13,19 +13,23 @@ globalStyles();
 
 export default function App({ Component, pageProps }: AppProps) {
 
-  const [modalShoppingCart, setModalShoppingCart] = useState(true)
+  const [modalShoppingCart, setModalShoppingCart] = useState(false)
+
+  function handleToggleModalShoppingCart() {
+    setModalShoppingCart(true)
+  }
 
   return (
     <ProductsProvider>
       <Container>
         <Header>
           <Image width={100} height={75} src={logoImg} alt="" />
-          <button>
+          <button onClick={handleToggleModalShoppingCart}>
             <Image width={25} height={25} src={shoppingCartImg} alt="" />
           </button>
         </Header>
 
-        <ShoppingCart />
+        {modalShoppingCart ? <ShoppingCart toggleModal={setModalShoppingCart} /> : null}
 
         <Component {...pageProps} />
       </Container>

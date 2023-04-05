@@ -6,6 +6,10 @@ export const ShoppingCartContainer = styled('article', {
   right: 0,
   zIndex: 100,
 
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+
   height: '100vh',
 
   backgroundColor: '$gray800',
@@ -30,7 +34,6 @@ export const ItemsContainer = styled('div', {
 
     gap: 24,
 
-    marginBottom: '12.375rem',
 })
 
 export const Items = styled('div', {
@@ -70,4 +73,45 @@ export const Items = styled('div', {
       border: 0,
     }
   }
+})
+
+export const PaymentsContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 57,
+
+
+})
+
+export const CloseButton = styled('button', {
+    position: 'absolute',
+    top: 24,
+    right: 24, 
+
+    border: 0,
+    backgroundColor: 'transparent',
+})
+
+export const ByProductsButton = styled('button', {
+    color: '$white',
+    backgroundColor: '$green500',
+    border: 0,
+    padding: '1.25rem 2rem',
+    fontSize: '1.5rem',
+    borderRadius: 8, 
+})
+
+
+export const BoxPayments = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 7,
+
+  p: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
+ 
 })
