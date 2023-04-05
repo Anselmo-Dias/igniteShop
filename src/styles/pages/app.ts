@@ -21,9 +21,10 @@ export const Header = styled('header', {
   alignItems: 'center',
   justifyContent: 'space-between',
 
-  div: {
+  button: {
     background: '$gray800', 
     padding: '0.75rem',
     borderRadius: 6,
+    border: 0,
   }
 })

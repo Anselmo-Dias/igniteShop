@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { styled } from "..";
+import { css, keyframes, styled } from "..";
 
 
 export const HomeContainer = styled('main', {
@@ -11,7 +11,7 @@ export const HomeContainer = styled('main', {
   minHeight: 656,
 });
 
-export const Product = styled('a', {
+export const Product = styled('div', {
   background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
   borderRadius: 8,
   // padding: '0.25rem',
@@ -48,6 +48,13 @@ export const Product = styled('a', {
     opacity: 0,
     transition: 'all 0.2s ease-in-out',
 
+    button: {
+      border: 'none',
+      background: 'transparent',
+      cursor: 'cell',
+      // animation: 'upAndDown',
+    },
+
     img: {
       background: '$green500', 
       padding: '0.75rem',
@@ -81,3 +88,12 @@ export const Product = styled('a', {
     }
   }
 });
+
+// const upAndDown = keyframes({
+//   '0%': {
+//     transform: 'translateX(0)'
+//   },
+//   '100%': {
+//     transform: 'translateX(-10px)'
+//   }
+// })
