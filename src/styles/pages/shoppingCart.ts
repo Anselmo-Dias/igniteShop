@@ -101,7 +101,6 @@ export const ByProductsButton = styled('button', {
     borderRadius: 8, 
 })
 
-
 export const BoxPayments = styled('div', {
   display: 'flex',
   flexDirection: 'column',
