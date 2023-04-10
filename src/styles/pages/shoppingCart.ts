@@ -26,6 +26,8 @@ export const ShoppingCartContainer = styled('article', {
   }
 })
 
+
+
 export const ItemsContainer = styled('div', {
     display: 'flex',
     alignItems: 'center',
