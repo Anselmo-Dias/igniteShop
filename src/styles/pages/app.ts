@@ -22,9 +22,22 @@ export const Header = styled('header', {
   justifyContent: 'space-between',
 
   button: {
+    position: 'relative',
     background: '$gray800', 
     padding: '0.75rem',
     borderRadius: 6,
     border: 0,
+
+    span : {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      height:25,
+      width:25,
+      padding: '5px 5px',
+      borderRadius: 999,
+      backgroundColor: '$green300',
+      transform: 'translateY(-10px)',
+    }
   }
 })

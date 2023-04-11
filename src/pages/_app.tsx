@@ -26,6 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Image width={100} height={75} src={logoImg} alt="" />
           <button onClick={handleToggleModalShoppingCart}>
             <Image width={25} height={25} src={shoppingCartImg} alt="" />
+            <span>3</span>
           </button>
         </Header>
 
