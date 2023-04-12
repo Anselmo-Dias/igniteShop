@@ -37,7 +37,7 @@ export const Header = styled('header', {
       padding: '5px 5px',
       borderRadius: 999,
       backgroundColor: '$green300',
-      transform: 'translateY(-10px)',
+      transform: 'translate(10px, -10px)',
     }
   }
 })
