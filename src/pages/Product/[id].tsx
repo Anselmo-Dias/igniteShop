@@ -26,9 +26,15 @@ interface ProductProps {
 
 export default function Product({ product }: ProductProps) {
   
-  const {buyTheProductDirectly} = useContext(ProductsContext)
-  
   const [isRedirectingofCheckout, setIsRedirectingOfCheckout] = useState(false);
+
+  const { productStripe, buyTheProductDirectly, handleTestProducts} = useContext(ProductsContext)
+
+  const { query } = useRouter()
+
+  const productId = query.id
+
+  console.log(productId)
 
   async function handleByProduct() {
     if(buyTheProductDirectly) {
@@ -45,6 +51,11 @@ export default function Product({ product }: ProductProps) {
         setIsRedirectingOfCheckout(false);
         alert("fala ao redirecionar ao checkout");
       }
+    } else {
+        const product = productStripe?.find((item: any) => {
+        return item.id === productId
+    })    
+        console.log(product)
     }
   }
 

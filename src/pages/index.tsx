@@ -31,8 +31,6 @@ export default function Home({products}: HomeProps) {
     handleTestProducts(products)
   }
   
-  console.log(products)
-
   const [sliderRefs] = useKeenSlider({
     slides: {
       perView: 2,
