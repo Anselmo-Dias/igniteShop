@@ -24,11 +24,18 @@ interface ProductProps {
   };
 }
 
+interface ProductItemProps {
+  id?: string
+  name?: string
+  imageUrl?: string
+  price?: string 
+}
+
 export default function Product({ product }: ProductProps) {
   
   const [isRedirectingofCheckout, setIsRedirectingOfCheckout] = useState(false);
 
-  const { productStripe, buyTheProductDirectly, handleTestProducts} = useContext(ProductsContext)
+  const { productStripe, buyTheProductDirectly, handleAddProductInShoppingCart} = useContext(ProductsContext)
 
   const { query } = useRouter()
 
@@ -52,10 +59,10 @@ export default function Product({ product }: ProductProps) {
         alert("fala ao redirecionar ao checkout");
       }
     } else {
-        const product = productStripe?.find((item: any) => {
-        return item.id === productId
+        const product = productStripe?.find((item?: ProductItemProps) => {
+        return item?.id === productId
     })    
-        console.log(product)
+        handleAddProductInShoppingCart(product)
     }
   }
 

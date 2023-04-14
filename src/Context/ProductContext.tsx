@@ -1,20 +1,20 @@
 import { ReactNode, createContext, useState } from "react";
 
-interface ProductsStripe {
-      id?: string
-      name?: string
-      imageUrl?: string
-      price?: string 
+interface ProductItemProps {
+    id: string
+    name: string
+    imageUrl: string
+    price: string 
 }
 
-type ProductsStripeProps = (ProductsStripe)[]
+type ProductsProps = (ProductItemProps)[]
 
 interface ProductsContentProps {
-  productStripe?: ProductsStripeProps
+  productStripe?: ProductsProps
   buyTheProductDirectly: boolean
-  handleTestProducts: (productsData?: any) => void
+  handleTestProducts: (productsData: ProductsProps) => void
+  handleAddProductInShoppingCart: (product?: ProductItemProps) => void
 }
-
 
 interface ProductsProviderProps {
   children: ReactNode
@@ -24,18 +24,21 @@ export const ProductsContext = createContext({} as ProductsContentProps)
 
 export function ProductsProvider({ children }: ProductsProviderProps) {
 
-  const [shoppingCart, setShoppingCart] = useState<ProductsStripe[]>()
-  const [productStripe, setProductStripe] = useState({} as ProductsStripeProps)
+  const [shoppingCart, setShoppingCart] = useState<ProductItemProps[]>()
+  const [productStripe, setProductStripe] = useState({} as ProductsProps)
   const [buyTheProductDirectly, setBuyTheProductDirectly] = useState(true)
 
-  function handleTestProducts(productsData: ProductsStripeProps) {
+  function handleTestProducts(productsData: ProductsProps) {
     setBuyTheProductDirectly(false)
     setProductStripe(productsData)
-    console.log(shoppingCart)
+  }
+
+  function handleAddProductInShoppingCart(product?: ProductItemProps) {
+    setShoppingCart((state?: ProductItemProps[]) => [...state, product])
   }
   
   return (
-    <ProductsContext.Provider value={{productStripe, buyTheProductDirectly, handleTestProducts }}>
+    <ProductsContext.Provider value={{productStripe, buyTheProductDirectly, handleTestProducts, handleAddProductInShoppingCart}}>
       {children}
     </ProductsContext.Provider>
   )
