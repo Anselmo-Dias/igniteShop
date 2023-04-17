@@ -26,9 +26,11 @@ export default function Home({products}: HomeProps) {
 
   const {handleTestProducts} = useContext(ProductsContext)
 
+
   function handleAddItemInShoppingCart() {
-    alert('Alterei o estato para efetuar a compra ')
+    alert('Alterei o estato para efetuar a compra')
     handleTestProducts(products)
+    console.log(products, 'enviando todos produtos')
   }
   
   const [sliderRefs] = useKeenSlider({

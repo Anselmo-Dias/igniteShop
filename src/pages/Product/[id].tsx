@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { Stripe } from "stripe";
 
-interface ProductProps {
+interface ProductsDataProps {
   product: {
     id: string;
     name: string;
@@ -25,25 +25,29 @@ interface ProductProps {
 }
 
 interface ProductItemProps {
-  id?: string
-  name?: string
-  imageUrl?: string
-  price?: string 
+  id: string
+  name: string
+  imageUrl: string
+  price: string 
 }
 
-export default function Product({ product }: ProductProps) {
+export default function Product({ product }: ProductsDataProps) {
   
   const [isRedirectingofCheckout, setIsRedirectingOfCheckout] = useState(false);
 
-  const { productStripe, buyTheProductDirectly, handleAddProductInShoppingCart} = useContext(ProductsContext)
+  const { shoppingCart, productStripe, buyTheProductDirectly, handleAddProductInShoppingCartOrRemove} = useContext(ProductsContext)
 
   const { query } = useRouter()
 
-  const productId = query.id
-
-  console.log(productId)
+  const productId = String(query.id)
 
   async function handleByProduct() {
+    const productThisShoppingCart = await productStripe.find((item: ProductItemProps) => {
+      return item.id === productId
+  })
+
+   console.log(productThisShoppingCart)
+
     if(buyTheProductDirectly) {
       try {
         setIsRedirectingOfCheckout(true);
@@ -58,14 +62,16 @@ export default function Product({ product }: ProductProps) {
         setIsRedirectingOfCheckout(false);
         alert("fala ao redirecionar ao checkout");
       }
-    } else {
-        const product = productStripe?.find((item?: ProductItemProps) => {
-        return item?.id === productId
-    })    
-        handleAddProductInShoppingCart(product)
-    }
-  }
+      return
+    } 
 
+    if(productThisShoppingCart) {
+      handleAddProductInShoppingCartOrRemove(productThisShoppingCart)
+    } 
+
+    console.log(shoppingCart.length)
+
+  }
   const { isFallback } = useRouter();
 
   if (isFallback) {
