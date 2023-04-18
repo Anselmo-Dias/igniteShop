@@ -25,52 +25,55 @@ interface ProductsDataProps {
 }
 
 interface ProductItemProps {
-  id: string
-  name: string
-  imageUrl: string
-  price: string 
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: string;
 }
 
 export default function Product({ product }: ProductsDataProps) {
-  
   const [isRedirectingofCheckout, setIsRedirectingOfCheckout] = useState(false);
 
-  const { shoppingCart, productStripe, buyTheProductDirectly, handleAddProductInShoppingCartOrRemove} = useContext(ProductsContext)
+  const {
+    shoppingCart,
+    productStripe,
+    buyTheProductDirectly,
+    handleAddProductInShoppingCart,
+  } = useContext(ProductsContext);
 
-  const { query } = useRouter()
+  const { query } = useRouter();
 
-  const productId = String(query.id)
+  const productId = String(query.id);
 
   async function handleByProduct() {
-    const productThisShoppingCart = await productStripe.find((item: ProductItemProps) => {
-      return item.id === productId
-  })
+    let productThisShoppingCart;
 
-   console.log(productThisShoppingCart)
+    if (productStripe.length !== 0) {
+      productThisShoppingCart = productStripe.find((item: ProductItemProps) => {
+        return item.id === productId;
+      });
+    }
 
-    if(buyTheProductDirectly) {
+    if (buyTheProductDirectly) {
       try {
         setIsRedirectingOfCheckout(true);
         const response = await axios.post("/api/checkout", {
           priceId: product.defaultPriceId,
         });
-  
+
         const { checkoutUrl } = response.data;
-  
+
         window.location.href = checkoutUrl;
       } catch (err) {
         setIsRedirectingOfCheckout(false);
         alert("fala ao redirecionar ao checkout");
       }
-      return
-    } 
+      return;
+    }
 
-    if(productThisShoppingCart) {
-      handleAddProductInShoppingCartOrRemove(productThisShoppingCart)
-    } 
-
-    console.log(shoppingCart.length)
-
+    if (productThisShoppingCart) {
+      handleAddProductInShoppingCart(productThisShoppingCart);
+    }
   }
   const { isFallback } = useRouter();
 
@@ -95,7 +98,9 @@ export default function Product({ product }: ProductsDataProps) {
 
           <p>{product.description}</p>
           <button disabled={isRedirectingofCheckout} onClick={handleByProduct}>
-            {buyTheProductDirectly ? `${isRedirectingofCheckout ? "Carregando..." : "Comprar"}`  : 'Adicionar ao carrinho'}
+            {buyTheProductDirectly
+              ? `${isRedirectingofCheckout ? "Carregando..." : "Comprar"}`
+              : "Adicionar ao carrinho"}
           </button>
         </ProductDetails>
       </ProductContainer>

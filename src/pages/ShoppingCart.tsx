@@ -3,41 +3,74 @@ import {
   BoxPayments,
   ByProductsButton,
   CloseButton,
-  Items,
   ItemsContainer,
   PaymentsContainer,
   ShoppingCartContainer,
 } from "../styles/pages/shoppingCart";
-import img from '../assets/Home.png'
 import closeImg from '../assets/close.svg'
-import { Dispatch, SetStateAction, useContext } from "react";
-import { ProductsContext } from "../Context/ProductContext";
+import { Dispatch, SetStateAction } from "react";
+import { Item } from "../components/Item";
+import { ProductsContext } from "@/src/Context/ProductContext";
+import { stripe } from "@/src/lib/stripe";
+import axios from "axios";
+import { GetStaticProps } from "next";
+import { useContext, useState } from "react";
+import { Stripe } from "stripe" 
 
 interface ShoppingCartProps {
   toggleModal: Dispatch<SetStateAction<boolean>>
 }
 
-export function ShoppingCart({toggleModal}: ShoppingCartProps) {
-  const {shoppingCart} = useContext(ProductsContext)
+interface ProductsDataProps {
+  product: {
+    id: string;
+    name: string;
+    imageUrl: string;
+    price: string;
+    description: string;
+    defaultPriceId: string;
+  };
+}
+export function ShoppingCart({toggleModal}: ShoppingCartProps, { product }: ProductsDataProps ) {
+  const [isRedirectingofCheckout, setIsRedirectingOfCheckout] = useState(false);
+  const {shoppingCart, handleRemoveProductFromShoppingCart} = useContext(ProductsContext)
 
-  const valueTotalOfProducts = shoppingCart.reduce((acc, value) => {
-    const redefiningValue = (value.price.substring(3, 8).trim().replace(',','.'))
-    // console.log(Number(redefiningValue))
-    return acc + Number(redefiningValue)
-  }, 0)
-
-  const priceFormatted = new Intl.NumberFormat('pt-BR', {
+   const priceFormatted = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   })
 
-  function RemoveProductFromTheShoppingCart() {
+  const valueTotalOfProducts = shoppingCart.reduce((acc, value) => {
+    const redefiningValue = (value.price.substring(3, 8).trim().replace(',','.'))
+    return acc + Number(redefiningValue)
+  }, 0)
+
+  function handleSelectProductOfRemove(id: string) {
     const newShoppingCartProductList = shoppingCart.filter((item) => {
-      return item.name !== "Camisa Ignite Lab"
+      return item.id != id
     })
-    console.log(newShoppingCartProductList)
+    handleRemoveProductFromShoppingCart(newShoppingCartProductList)
   }
 
+  async function handleByProduct() {
+    try {
+      setIsRedirectingOfCheckout(true);
+      const response = await axios.post("/api/checkout2", {
+        shoppingCart: shoppingCart,
+      });
+
+      console.log(response)
+
+      const { checkoutUrl } = response.data;
+
+      window.location.href = checkoutUrl;
+    } catch (err) {
+      setIsRedirectingOfCheckout(false);
+      alert("fala ao redirecionar ao checkout");
+    }
+  }
+
+ 
   return (
     <ShoppingCartContainer>
       <CloseButton onClick={() => toggleModal(false)} type="button">
@@ -49,19 +82,7 @@ export function ShoppingCart({toggleModal}: ShoppingCartProps) {
         <ItemsContainer>
           {shoppingCart.map((item) => {
             return (
-              <Items key={item.id}>
-              <Image
-                width={100}
-                height={93}
-                src={item.imageUrl}
-                alt=""
-              />
-              <div>
-                <strong>{item.name}</strong>
-                <span>{item.price}</span>
-                <button onClick={RemoveProductFromTheShoppingCart}>Remover</button>
-              </div>
-            </Items>
+              <Item key={item.id} id={item.id} imageUrl={item.imageUrl} name={item.name} price={item.price} handleRemoveItem={handleSelectProductOfRemove}/>
             )
           })}
         </ItemsContainer>
@@ -79,7 +100,7 @@ export function ShoppingCart({toggleModal}: ShoppingCartProps) {
               <strong>{priceFormatted.format(valueTotalOfProducts)}</strong>
             </p>
           </BoxPayments>
-          <ByProductsButton type="button">
+          <ByProductsButton onClick={handleByProduct} type="button">
             Finalizar compra
           </ByProductsButton>
       </PaymentsContainer>

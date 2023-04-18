@@ -1,20 +1,21 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useState } from "react";
 
 interface ProductItemProps {
-  id: string;
-  name: string;
-  imageUrl: string;
-  price: string;
+  id: string
+  name: string
+  imageUrl: string
+  price: string
 }
 
-type ProductsDataProps = ProductItemProps[];
+export type ProductsDataProps = ProductItemProps[]
 
 interface ProductsContentProps {
-  shoppingCart: ProductItemProps[];
-  productStripe: ProductsDataProps;
-  buyTheProductDirectly: boolean;
-  handleTestProducts: (productsData: ProductsDataProps) => void;
-  handleAddProductInShoppingCartOrRemove: (product: ProductItemProps) => void;
+  shoppingCart: ProductItemProps[]
+  productStripe: ProductsDataProps
+  buyTheProductDirectly: boolean
+  handleTestProducts: (productsData: ProductsDataProps) => void
+  handleAddProductInShoppingCart: (product: ProductItemProps) => void
+  handleRemoveProductFromShoppingCart: (newProductListOfShoppingCart: ProductsDataProps) => void
 }
 
 interface ProductsProviderProps {
@@ -25,7 +26,7 @@ export const ProductsContext = createContext({} as ProductsContentProps);
 
 export function ProductsProvider({ children }: ProductsProviderProps) {
   const [shoppingCart, setShoppingCart] = useState<ProductItemProps[]>([]);
-  const [productStripe, setProductStripe] = useState({} as ProductsDataProps);
+  const [productStripe, setProductStripe] = useState<ProductsDataProps>([]);
   const [buyTheProductDirectly, setBuyTheProductDirectly] = useState(true);
 
   function handleTestProducts(productsData: ProductsDataProps) {
@@ -33,7 +34,7 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
     setProductStripe(productsData);
   }
 
-  function handleAddProductInShoppingCartOrRemove(product: ProductItemProps) {
+  function handleAddProductInShoppingCart(product: ProductItemProps) {
     const existsProductInShoppingCart = shoppingCart.find((item) => {
       return item === product;
     });
@@ -43,6 +44,10 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
     console.log(shoppingCart);
   }
 
+  function handleRemoveProductFromShoppingCart(newProductListOfShoppingCart: ProductsDataProps) {
+    setShoppingCart(newProductListOfShoppingCart)
+  }
+
   return (
     <ProductsContext.Provider
       value={{
@@ -50,7 +55,8 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
         shoppingCart,
         buyTheProductDirectly,
         handleTestProducts,
-        handleAddProductInShoppingCartOrRemove,
+        handleAddProductInShoppingCart,
+        handleRemoveProductFromShoppingCart,
       }}
     >
       {children}
